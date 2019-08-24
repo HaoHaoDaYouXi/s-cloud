@@ -1,0 +1,69 @@
+server:
+  port: 9891
+
+spring:
+  application:
+    name: @pom.artifactId@
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9890/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+
+#---------------------路由---------------------
+zuul:
+  add-proxy-headers: true
+  add-host-header: true
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  forceOriginalQueryStringEncoding: true
+  routes:
+    oauth-service:
+      path: /oauth/**
+      sensitiveHeaders:
+#      strip-prefix: false
+      service-id: oauth-service
+      ribbon:
+        eager-load:
+          enabled: true
+        MaxAutoRetries: 1
+        MaxAutoRetriesNextServer: 2
+        OkToRetryOnAllOperations: false
+        ConnectTimeout: 10000
+        ReadTimeout: 10000
+
+#---------------------OAuth2---------------------
+security:
+  oauth2:
+    client:
+      clientId: cloud-client-gateway
+      clientSecret: cloudClientSecret
+      access-token-uri: http://localhost:${server.port}/oauth/oauth/token
+      user-authorization-uri: http://localhost:${server.port}/oauth/oauth/authorize
+    resource:
+      user-info-uri:  http://localhost:${server.port}/oauth/user
+      prefer-token-info: false
+      jwt:
+        key-uri: http://localhost:9892/oauth/token_key
+        key-value: cloud
+
+
+
+proxy:
+  auth:
+    routes:
+      oauth-service: oauth2
+
+
+cloud:
+  enableSqlLogInterceptor: false
+
+
+
+
+
+

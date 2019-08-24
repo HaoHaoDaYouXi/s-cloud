@@ -1,0 +1,113 @@
+server:
+  port: 9191
+  tomcat:
+      uri-encoding: UTF-8
+  context-path: /test
+
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    typeAliasesPackage: com.java.springcloud.model
+
+spring:
+    messages:
+      basename: il8n/messages
+      encoding: UTF-8
+    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss
+        time-zone: GMT+8
+    http:
+        multipart:
+          max-file-size: 600Mb
+          max-request-size: 600Mb
+    datasource:
+        name: springcloud
+        url: jdbc:mysql://127.0.0.1:3306/springcloud?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: root
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        # wall用于防火墙
+        filters: stat
+        maxActive: 20
+        initialSize: 5
+        maxWait: 60000
+        minIdle: 3
+    resources:
+        static-locations: classpath:/static/
+    freemarker:
+        charset: UTF-8
+        content-type: text/html
+        expose-request-attributes: true
+        expose-session-attributes: true
+        request-context-attribute: request
+        suffix: .ftl
+        check-template-location: true
+        template-loader-path: classpath:/templates/
+        static-path-pattern: /static/**
+        cache: false
+        settings:
+            number_format: '0.##'
+            template_update_delay: 0
+    redis:
+        database: 0
+        secondary-database: 11
+        host: 127.0.0.1
+        port: 6379
+        password:
+        timeout: 30000
+        max-active: 300
+        max-total: 50
+        max-wait-millis: 15000
+        test-on-borrow: true
+        max-idle: 10
+        max-wait: -1
+        min-idle: 0
+        session-expire: 1800
+
+#druid console
+druid:
+    loginUsername: admin
+    loginPassword: admin
+    resetEnable: false
+
+#阿里云OSS 配置
+aliyun:
+    oss:
+        endpoint: https://oss-cn-shanghai.aliyuncs.com
+        accessKeyId:
+        accessKeySecret:
+        bucketName:
+        firstKey: my-first-key
+        filedir:
+        filedirV:
+        imgSize: 5
+        videoSize: 30
+
+
+#minio 配置
+minio:
+  local: http://127.0.0.1
+  endpoint: http://127.0.0.1
+  accessKeyId:
+  accessKeySecret:
+  bucketName:
+  imgDir:
+  videoDir:
+  imgSize: 5
+  videoSize: 30
+
+#shiro 加密
+shiro:
+  algorithmName: SHA-256
+  hashIterations: 2
+
+#RSA 加密
+RSA:
+  publicKey:
+  privateKey:
+
+
+
+
+
+

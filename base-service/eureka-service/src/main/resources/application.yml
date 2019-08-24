@@ -1,0 +1,27 @@
+server:
+  port: 9890
+  tomcat:
+      uri-encoding: UTF-8
+
+spring:
+  application:
+    name: @pom.artifactId@
+  cloud:
+    inetutils:
+      ignoredInterfaces: ['VMware.*']
+      preferredNetworks: ['192.168']
+      use-only-site-local-interfaces: true
+
+eureka:
+  server:
+    enable-self-preservation: false
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka-service/
+
+
+
