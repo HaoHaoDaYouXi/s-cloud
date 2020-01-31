@@ -18,31 +18,21 @@
         </filter>
     </appender>
 
-    <appender name="file"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${USER_HOME}/${FILE_NAME}.log</file>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${USER_HOME}/${byDay}/${FILE_NAME}-${byDay}-%i.log.zip
-            </fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>10</maxIndex>
+    <!--根据每天和大小记录日志-->
+    <appender name="SizeAndTime" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}/%d{yyyy-MM-dd}-${FILE_NAME}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
-
-        <triggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>5MB</maxFileSize>
-        </triggeringPolicy>
         <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n
             </pattern>
         </encoder>
-
     </appender>
 
     <logger name="com.java.springcloud" level="info" additivity="true">
-        <appender-ref ref="file" />
-        <!-- <appender-ref ref="STDOUT" /> -->
+        <appender-ref ref="SizeAndTime" />
     </logger>
 
     <!--mapper的位置-->
@@ -60,7 +50,6 @@
     <logger name="java.sql.ResultSet" level="DEBUG" />
 
     <root level="info">
-        <!--<appender-ref ref="file" />-->
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
